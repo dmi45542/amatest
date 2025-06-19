@@ -855,11 +855,11 @@ footer {                           /* Подвал */
 /* === Боковая панель-каталог === */
 .catalog-sidebar {                         
   position: fixed;                         
-  top: 30px; left: -227px; width: 270px; height: 850px;
+  top: 30px; left: -227px; width: 270px; height: 750px;
   background: #fff; border-right: 2px dashed #bdbdbd;
   box-shadow: 2px 0 20px 0 #0001; z-index: 20000;
   transition: left 0.35s cubic-bezier(.86,.01,.41,1.01);
-  border-radius: 0 50px 50px 0; overflow-y: auto;
+  border-radius: 0 0px 0px 0; overflow-y: auto;
   font-family: 'Segoe UI', Arial, sans-serif;
 }
 /* при наведении или если есть класс active — панель открыта */
@@ -928,6 +928,28 @@ footer {                           /* Подвал */
 }
 .catalog-menu > li:hover, .catalog-menu > li ul li:hover {
   background: #eef5fa; color: #0078ff;
+}
+
+@media (max-width: 768px) {
+  .catalog-sidebar {
+    display: none;
+  }
+}
+
+@media (max-width: 1023px) {
+  .catalog-sidebar {
+    display: block;
+    top: 30px;
+    left: -227px;
+    width: 270px;
+    height: 750px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .catalog-sidebar {
+    display: block !important;
+  }
 }
 
     /* === Стили для SVG элементов === */
