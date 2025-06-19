@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
 
@@ -946,7 +946,7 @@ footer {                           /* Подвал */
   }
 }
 
-@media (max-width: 1020px) {
+@media (max-width: 1000px) {
   .catalog-sidebar {
     display: block !important;
   }
@@ -1328,34 +1328,10 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 
-<script>
-  function checkZoom() {
-    const sidebar = document.querySelector('.cart-box');
-    if (window.devicePixelRatio > 1.9) {
-      sidebar.style.display = 'none';
-    } else {
-      sidebar.style.display = '';
-    }
-  }
-
-  window.addEventListener('load', checkZoom);
-  window.addEventListener('resize', checkZoom);
-</script>
 
 
-<script>
-  function checkZoom() {
-    const sidebar = document.querySelector('.catalog-handle');
-    if (window.devicePixelRatio > 1.9) {
-      sidebar.style.display = 'none';
-    } else {
-      sidebar.style.display = '';
-    }
-  }
 
-  window.addEventListener('load', checkZoom);
-  window.addEventListener('resize', checkZoom);
-</script>
+
 
 <script>
 const sidebar = document.getElementById('catalogSidebar');
@@ -1911,5 +1887,24 @@ function moveSlide(dir) {
 </div>
     
   </div>
+
+<script>
+  function checkSidebarVisibility() {
+    const catalogHandle = document.querySelector('.catalog-handle');
+    const catalogSidebar = document.querySelector('.catalog-sidebar');
+
+    if (window.innerWidth < 768) {
+      if (catalogHandle) catalogHandle.style.display = 'none';
+      if (catalogSidebar) catalogSidebar.style.display = 'none';
+    } else {
+      if (catalogHandle) catalogHandle.style.display = '';
+      if (catalogSidebar) catalogSidebar.style.display = '';
+    }
+  }
+
+  window.addEventListener('load', checkSidebarVisibility);
+  window.addEventListener('resize', checkSidebarVisibility);
+</script>
+
 </body>
 </html>
