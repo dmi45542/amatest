@@ -930,11 +930,7 @@ footer {                           /* Подвал */
   background: #eef5fa; color: #0078ff;
 }
 
-@media (max-width: 768px) {
-  .catalog-sidebar {
-    display: none;
-  }
-}
+
 
 @media (max-width: 1023px) {
   .catalog-sidebar {
@@ -1171,7 +1167,14 @@ section#about {
   margin-top: -60px; /* выносим вверх */
 }
 
-  </style>
+  
+@media (pointer: coarse) {
+  .catalog-sidebar {
+    display: none !important;
+  }
+}
+
+</style>
 
 
 <script>
@@ -1271,6 +1274,13 @@ document.addEventListener('DOMContentLoaded', function() {
       display: none !important;
     }
   }
+
+@media (pointer: coarse) {
+  .catalog-sidebar {
+    display: none !important;
+  }
+}
+
 </style>
 <script>
   if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
@@ -1328,10 +1338,34 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 
+<script>
+  function checkZoom() {
+    const sidebar = document.querySelector('.cart-box');
+    if (window.devicePixelRatio > 1.9) {
+      sidebar.style.display = 'none';
+    } else {
+      sidebar.style.display = '';
+    }
+  }
+
+  window.addEventListener('load', checkZoom);
+  window.addEventListener('resize', checkZoom);
+</script>
 
 
+<script>
+  function checkZoom() {
+    const sidebar = document.querySelector('.catalog-handle');
+    if (window.devicePixelRatio > 1.9) {
+      sidebar.style.display = 'none';
+    } else {
+      sidebar.style.display = '';
+    }
+  }
 
-
+  window.addEventListener('load', checkZoom);
+  window.addEventListener('resize', checkZoom);
+</script>
 
 <script>
 const sidebar = document.getElementById('catalogSidebar');
