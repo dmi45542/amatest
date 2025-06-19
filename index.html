@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ru">
 <head>
 
@@ -1328,34 +1328,10 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 
-<script>
-  function checkZoom() {
-    const sidebar = document.querySelector('.cart-box');
-    if (window.devicePixelRatio > 1.9) {
-      sidebar.style.display = 'none';
-    } else {
-      sidebar.style.display = '';
-    }
-  }
-
-  window.addEventListener('load', checkZoom);
-  window.addEventListener('resize', checkZoom);
-</script>
 
 
-<script>
-  function checkZoom() {
-    const sidebar = document.querySelector('.catalog-handle');
-    if (window.devicePixelRatio > 1.9) {
-      sidebar.style.display = 'none';
-    } else {
-      sidebar.style.display = '';
-    }
-  }
 
-  window.addEventListener('load', checkZoom);
-  window.addEventListener('resize', checkZoom);
-</script>
+
 
 <script>
 const sidebar = document.getElementById('catalogSidebar');
