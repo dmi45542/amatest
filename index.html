@@ -1278,6 +1278,25 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 </script>
 
+
+<script>
+function checkSidebarVisibility() {
+  const sidebar = document.querySelector('.catalog-sidebar');
+  const handle = document.querySelector('.catalog-handle');
+
+  if (window.innerWidth <= 768) {
+    if (sidebar) sidebar.style.display = 'none';
+    if (handle) handle.style.display = 'none';
+  } else {
+    if (sidebar) sidebar.style.display = '';
+    if (handle) handle.style.display = '';
+  }
+}
+
+window.addEventListener('load', checkSidebarVisibility);
+window.addEventListener('resize', checkSidebarVisibility);
+</script>
+
 </head>
 
 <img class="header-logo" src="https://i.postimg.cc/zG5fRpZy/AMA-logo-transparent.png" alt="">
