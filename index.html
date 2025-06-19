@@ -1,0 +1,1913 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>AMA - Насосы нового поколения</title>
+  <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Chalk+Cyrillic+Typeface&display=swap" rel="stylesheet">
+  <style>
+
+/* === Глобальные CSS переменные === */
+:root {
+  --graphite: #333;               /* Основной цвет текста (графитовый) */
+  --light-graphite: #777;         /* Вторичный цвет текста (светло-графитовый) */  
+  --paper: rgba(249, 249, 247, 0.85); /* Цвет фона с прозрачностью (бумага) */
+  --border: 2px solid var(--graphite); /* Стиль основной границы */
+  --dashed: 2px dashed var(--light-graphite); /* Стиль пунктирной границы */  
+  --graphite-dust: linear-gradient(135deg, rgba(51,51,51,0.1) 0%, rgba(51,51,51,0.05) 50%, rgba(51,51,51,0.1) 100%); /* Градиент для элементов */
+}
+
+
+/* === Общие стили === */
+* {                                 /* Сброс box model для всех элементов */
+  box-sizing: border-box;           /* Основной шрифт */
+  font-family: 'gost-type B', cursive;
+  margin: 0;
+  padding: 0;
+}
+  /* === Глобальные переменные === */
+    :root {
+      --graphite: #333;
+      --light-graphite: #777;
+      --paper: rgba(249, 249, 247, 0.85);
+      --border: 2px solid var(--graphite);
+      --dashed: 2px dashed var(--light-graphite);
+      --dust: linear-gradient(135deg, rgba(51,51,51,0.1) 0%, rgba(51,51,51,0.05) 50%, rgba(51,51,51,0.1) 100%);
+      --container-max: 1200px;
+      --font-scale-min: 14;
+      --font-scale-max: 18;
+    }
+
+    /* === Responsive typography === */
+    html {
+      font-size: calc(var(--font-scale-min)px + (var(--font-scale-max) - var(--font-scale-min)) * ((100vw - 320px) / (1600 - 320)));
+    }
+
+    /* === Reset & base styles === */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--graphite);
+      background: #f9f9f9;
+      background-image: url('https://vmasshtabe.ru/app/uploads/2022/03/2340277-vms-1.png');
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+      background-blend-mode: overlay;
+      min-height: 100vh;
+      overflow-x: hidden;
+      
+    }
+    img { max-width: 100%; height: auto; display: block; }
+    .container { max-width: var(--container-max); width: 100%; margin: 0 auto; padding: 0 1rem; }
+    header, nav, main, section, footer { width: 100%; }
+
+    /* === Layout helpers === */
+    .flex { display: flex; flex-wrap: wrap; justify-content: space-between; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 1rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; }
+
+    /* === Typography === */
+    h1, h2, h3 { margin-bottom: 0.5rem; }
+    h2 { font-size: 1.5rem; text-transform: uppercase; border-bottom: var(--dashed); padding-bottom: 0.5rem; margin-bottom: 1rem; }
+    p, li { margin-bottom: 0.75rem; }
+    ul { list-style: none; }
+    ul li { position: relative; padding-left: 1rem; }
+    ul li::before { content: "—"; position: absolute; left: 0; font-weight: bold; }
+
+    /* === Navigation Tabs === */
+    .tab-nav {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem;
+      background: var(--paper); border-bottom: var(--border); padding: 0.5rem;
+      position: sticky; top: 0; z-index: 10;
+    }
+    .tab-nav a {
+      position: relative; padding: 0.75rem 1.25rem; background: var(--paper); border: var(--border);
+      text-decoration: none; color: var(--graphite); font-weight: 600;
+      transition: transform 0.2s, box-shadow 0.2s;
+      white-space: nowrap;
+    }
+    .tab-nav a::before {
+      content: ""; position: absolute; inset: 0;
+      background: var(--dust); opacity: 0.4; border-radius: 2px;
+      pointer-events: none;
+    }
+    .tab-nav a:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+    .tab-nav a.active { background-color: rgba(200,200,200,0.3); }
+
+    /* === Sections === */
+    section { display: none; opacity: 0; transition: opacity 0.4s ease; padding: 1.5rem; background: var(--paper); margin: 1rem 0; border: var(--border); border-radius: 0.5rem; }
+    section.active { display: block; opacity: 1; }
+
+    /* === Drawing frame and stamps === */
+    .drawing-frame {
+      position: fixed; inset: 1rem; border: var(--border); background: var(--paper);
+      pointer-events: none; z-index: 1;
+    }
+    .drawing-frame::before { content: ""; position: absolute; inset: 0.5rem; border: var(--border); }
+    .corner-mark { position: absolute; width: 1rem; height: 1rem; border: var(--border); z-index: 2; }
+    .corner-mark.tr { top: 1rem; right: 1rem; transform: rotate(90deg); }
+    .corner-mark.bl { bottom: 1rem; left: 1rem; transform: rotate(270deg); }
+    .corner-mark.br { bottom: 1rem; right: 1rem; transform: rotate(180deg); }
+    .gost-stamp { margin: 1rem 0; font-size: 0.75rem; }
+    .gost-stamp-table { width: 100%; border-collapse: collapse; }
+    .gost-stamp-table td { border: 1px solid #000; padding: 0.25rem; text-align: center; }
+
+    /* === Carousel === */
+    .carousel-container { position: relative; overflow: hidden; }
+    .carousel-track { display: flex; transition: transform 0.5s ease-in-out; }
+    .slide { min-width: 100%; padding: 1rem; background: #fff; border-radius: 0.5rem; }
+    .indicators { display: flex; justify-content: center; gap: 0.5rem; margin-top: 0.5rem; }
+    .dot { width: 0.75rem; height: 0.75rem; border-radius: 50%; background: #ccc; cursor: pointer; }
+    .dot.active { background: #555; }
+
+    /* === Forms & buttons === */
+    input, select, textarea { width: 100%; padding: 0.75rem; margin-bottom: 1rem; border: var(--border); background: var(--paper); font-size: 1rem; border-radius: 0.25rem; }
+    button { padding: 0.75rem; border: var(--border); background: var(--paper); cursor: pointer; font-size: 1rem; border-radius: 0.25rem; position: relative; }
+    button::after { content: "→"; position: absolute; right: 1rem; }
+
+    /* === Cart box === */
+    .cart-box { background: var(--paper); border: var(--border); padding: 1rem; border-radius: 0.5rem; }
+
+    /* === Responsive breakpoints === */
+    @media (min-width: 600px) {
+      .container.grid-2 { display: grid; grid-template-columns: repeat(2,1fr); }
+      .tab-nav { padding: 1rem 2rem; }
+    }
+    @media (min-width: 900px) {
+      .container.grid-3 { display: grid; grid-template-columns: repeat(3,1fr); }
+      header { display: flex; align-items: center; justify-content: space-between; padding: 2rem 1rem; }
+      h2 { font-size: 1.75rem; }
+    }
+    @media (min-width: 1200px) {
+      .container.grid-4 { display: grid; grid-template-columns: repeat(4,1fr); }
+      .catalog { margin-right: calc(25% + 1rem); }
+      .cart-box { position: fixed; top: 10%; right: 2rem; width: calc(20% - 2rem); }
+      section { max-width: calc(100% - 2 * var(--container-max)); margin: 2rem auto; }
+    }
+body {                              /* Стили для body */
+  margin: 0;                        /* Убираем внешние отступы */
+  color: var(--graphite);           /* Основной цвет текста */
+  line-height: 1.6;                 /* Межстрочный интервал */
+  padding: 0;                       /* Убираем внутренние отступы */
+  position: relative;               /* Относительное позиционирование */
+  min-height: 100vh;                /* Минимальная высота на весь экран */
+  background-image: url('https://vmasshtabe.ru/app/uploads/2022/03/2340277-vms-1.png'); /* Фоновое изображение */
+  background-color: transparent;    /* Прозрачный фон */
+  background-attachment: fixed;     /* Фиксированный фон */
+  background-size: cover;           /* Масштабирование фона */
+  background-position: center;      /* Позиционирование фона */
+  background-blend-mode: overlay;   /* Режим наложения фона */
+  font-variant-numeric: normal;     /* Стиль цифр */
+}
+
+
+@media (max-width: 720px) {  
+    p {  
+        font-size: 18px;  
+        font-family: Arial;  
+        line-height: 24px;  
+    }  
+    body {  
+        margin: 40px;  
+        background: lightyellow;  
+    }  
+}  
+
+html, body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background: #f9f9f9;
+      color: #333;
+      width: 100%;
+      overflow-x: hidden;
+    }
+
+body {
+  background: linear-gradient(rgba(249, 249, 249, 0.8), rgba(249, 249, 249, 0.8)),
+              url('https://vmasshtabe.ru/app/uploads/2022/03/2340277-vms-1.png');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  background-blend-mode: overlay;
+}
+
+    header, footer, section, nav, aside, main {
+      width: 100%;
+    }
+
+    /* Адаптивная сетка */
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 0 15px;
+    }
+
+    /* Адаптивные изображения */
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Универсальная адаптивность */
+    .flex {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .content-area, .catalog, .cart-box, .form-group, .tab-nav {
+      width: 100%;
+    }
+
+    /* Мобильные адаптивные стили */
+    @media (max-width: 1024px) {
+      .catalog-sidebar {
+        display: none;
+      }
+      .company-logo,
+      .nasos-shapka-odin,
+      .nasos-shapka-dva,
+      .nasos-shapka-tri,
+      .nasos-shapka-chetire,
+      .nasos-shapka-pyat {
+        display: none;
+      }
+      .tab-nav a {
+        flex: 1 1 48%;
+        margin: 5px 0;
+      }
+    }
+
+    @media (max-width: 768px) {
+      h1, h2, h3 {
+        font-size: 1.2rem;
+      }
+      .carousel-container {
+        margin-top: 20px;
+      }
+      .product {
+        width: 100% !important;
+        margin: 10px 0;
+      }
+      .catalog {
+        grid-template-columns: 1fr !important;
+        margin-right: 0 !important;
+      }
+      form input, form select, form textarea {
+        font-size: 1rem;
+      }
+      .tab-nav {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .cart-box {
+        position: static;
+        width: 100%;
+        margin-bottom: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        font-size: 14px;
+      }
+      .tab-nav a {
+        font-size: 0.9rem;
+        padding: 8px;
+      }
+    }
+
+/* === Стили для чертежного штампа ГОСТ === */
+.gost-stamp {                      /* Ширина штампа */
+  width: 300px;                    /* Шрифт */
+  font-family: Arial, sans-serif;  /* Размер шрифта */
+  font-size: 10px;                 /* Внешние отступы */
+  margin: -300px;                  /* Обтекание справа */
+  float: right;                    /* Отступ сверху */
+  margin-top: 130px;               /* Высота */ 
+}
+
+.gost-stamp-table {                /* Таблица штампа */
+  width: 100%;                     /* Ширина 100% */
+  border-collapse: collapse;       /* Схлопывание границ */
+  table-layout: fixed;             /* Фиксированная ширина ячеек */
+  border: 1px solid black;         /* Граница */
+}
+
+.gost-stamp-table td {             /* Ячейки таблицы */
+  border: 1px solid black;         /* Граница ячеек */
+  padding: 2px;                    /* Внутренние отступы */
+  text-align: center;              /* Выравнивание текста по центру */
+  vertical-align: middle;          /* Вертикальное выравнивание */
+}
+
+.gost-stamp-table td[colspan="2"] {/* Объединенные ячейки */
+  text-align: left;                /* Выравнивание текста по левому краю */
+  padding-left: 4px;               /* Внутренний отступ слева */
+}
+
+.gost-stamp-table tr:first-child td { /* Первая строка таблицы */
+  font-weight: bold;               /* Жирный шрифт */
+}
+
+.numbers {                         /* Стиль для старых цифр */
+  font-variant-numeric: oldstyle-nums;
+}
+
+/* === Рамка чертежа === */
+.drawing-frame {                   /* Фиксированное позиционирование */
+  position: fixed;                 /* Позиционирование от краев */
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  border: var(--border);           /* Граница */
+  pointer-events: none;            /* Отключение событий мыши */
+  z-index: 1;                      /* z-index */
+  background-color: var(--paper);  /* Цвет фона */
+}
+
+@media (max-width: 768px) {        /* Адаптив для рамки */
+  .drawing-frame {
+    display: none;                 /* Скрытие на мобильных */
+  }
+}
+
+.drawing-frame::before {           /* Внутренняя рамка */
+  content: "";
+  position: absolute;             /* Абсолютное позиционирование */
+  top: 5px;                       /* Позиционирование внутри рамки */
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  border: var(--border);           /* Граница */
+}
+
+/* === Угловые метки === */
+.corner-mark {                     /* Абсолютное позиционирование */
+  position: absolute;              /* Размеры */
+  width: 15px;
+  height: 15px;
+  border: var(--border);           /* Граница */
+  border-right: none;              /* Убираем правую границу */
+  border-bottom: none;             /* Убираем нижнюю границу */
+  z-index: 2;                      /* z-index */
+}
+
+@media (max-width: 768px) {        /* Адаптив для угловых меток */
+  .corner-mark {
+    display: none;                 /* Скрытие на мобильных */
+  }
+}
+
+.corner-mark.tr {                  /* Правый верхний угол */
+  top: 10px;
+  right: 10px;
+  transform: rotate(90deg);        /* Поворот на 90 градусов */
+}
+
+.corner-mark.bl {                  /* Левый нижний угол */
+  bottom: 10px;
+  left: 10px;
+  transform: rotate(270deg);       /* Поворот на 270 градусов */
+}
+
+.corner-mark.br {                  /* Правый нижний угол */
+  bottom: 10px;
+  right: 10px;
+  transform: rotate(180deg);       /* Поворот на 180 градусов */
+}
+
+/* === Основная область контента === */
+.content-area {
+  padding: 20px 15px 60px;         /* Внутренние отступы */
+  margin: 10px;                    /* Внешние отступы */
+  position: relative;              /* Относительное позиционирование */
+  z-index: 3;                      /* z-index */
+  padding-top: 80px;               /* Дополнительный отступ сверху */
+}
+
+@media (min-width: 768px) {        /* Адаптив для области контента */
+  .content-area {
+    padding: 40px 30px 60px;       /* Увеличенные отступы */
+    margin: 20px;
+  }
+}
+
+/* === Шапка сайта === */
+header {
+  background: var(--paper);        /* Фон */
+  color: var(--graphite);          /* Цвет текста */
+  padding: 1rem;                   /* Внутренние отступы */
+  display: flex;                   /* Flex-контейнер */
+  flex-direction: column;          /* Направление элементов - колонка */
+  align-items: center;             /* Выравнивание по центру */
+  justify-content: center;
+  position: relative;              /* Относительное позиционирование */
+  border-bottom: var(--border);    /* Граница снизу */
+  text-align: center;              /* Выравнивание текста */
+  margin-top: 60px;                /* Отступ сверху */ 
+}
+
+@media (min-width: 768px) {        /* Адаптив для шапки */
+  header {
+    padding: 1.5rem 2rem;          /* Увеличенные отступы */
+  }
+}
+
+.logo {                            /* Логотип */
+  font-family: 'Chalk Cyrillic Typeface', cursive; /* Шрифт */
+  font-size: 1.5rem;               /* Размер шрифта */
+  font-weight: bold;               /* Жирный шрифт */
+  position: relative;              /* Относительное позиционирование */
+  margin-bottom: 0.5rem;           /* Отступ снизу */
+  color: #1a2f70;                  /* Цвет текста */
+  text-shadow: 0.5px 0.5px 0 #0c1c3b; /* Тень текста */
+  letter-spacing: 0.5px;           /* Межбуквенный интервал */
+  filter: brightness(1.1);         /* Яркость */
+}
+
+@media (min-width: 768px) {        /* Адаптив для логотипа */
+  .logo {
+    font-size: 2rem;               /* Размер шрифта */
+    margin-top: -50px;             /* Смещение вверх */
+    font-size: 50px;               /* Размер шрифта */
+  }
+}
+
+.logo::after {                     /* Подчеркивание логотипа */
+  content: "";
+  position: absolute;              /* Абсолютное позиционирование */
+  bottom: -5px;                    /* Позиционирование снизу */
+  left: 0;
+  width: 100%;                     /* Ширина на всю ширину */
+  height: 3px;                     /* Высота линии */
+  background: #1a2f70;             /* Цвет линии */
+}
+
+.slogan {                          /* Слоган */
+  font-size: 1.5rem;               /* Размер шрифта */
+  font-family: 'Chalk Cyrillic Typeface', cursive; /* Шрифт */
+  text-decoration: underline;      /* Подчеркивание */
+  text-underline-offset: 6px;      /* Смещение подчеркивания */
+  text-decoration-thickness: 2px;  /* Толщина подчеркивания */
+  margin-top: 0.5rem;              /* Отступ сверху */
+}
+
+@media (min-width: 768px) {        /* Адаптив для слогана */
+  .slogan {
+    font-size: 2rem;               /* Размер шрифта */
+  }
+}
+
+/* === Навигация по вкладкам === */
+.tab-nav {                         /* Flex-контейнер */
+  display: flex;                    /* Направление - строка */
+  flex-direction: row;             /* Перенос на новую строку */
+  flex-wrap: wrap;                 /* Выравнивание по центру */
+  justify-content: center;         /* Расстояние между элементами */
+  gap: 0.5rem;                     /* Внутренние отступы */
+  padding: 0.5rem;                 /* Граница снизу */
+  border-bottom: var(--border);    /* Фон */
+  background: var(--paper);        /* Отступ сверху */
+  margin-top: 5px;
+}
+
+@media (min-width: 768px) {        /* Адаптив для навигации */
+  .tab-nav {
+    gap: 1rem;                     /* Увеличенное расстояние между элементами */
+    padding: 1rem 2rem;            /* Увеличенные отступы */
+  }
+}
+
+.tab-nav a {                       /* Ссылки в навигации */
+  color: var(--graphite);          /* Цвет текста */
+  text-decoration: none;           /* Убираем подчеркивание */
+  font-weight: 600;                /* Жирный шрифт */
+  padding: 0.3rem 0.6rem;          /* Внутренние отступы */
+  position: relative;              /* Относительное позиционирование */
+  border: var(--border);           /* Граница */
+  background: var(--paper);        /* Фон */
+  font-size: 0.9rem;               /* Размер шрифта */
+  white-space: nowrap;             /* Запрет переноса текста */
+  box-shadow:                      /* Тень */
+    1px 1px 0px rgba(51,51,51,0.2),
+    2px 2px 2px rgba(51,51,51,0.1),
+    inset 0 0 10px rgba(51,51,51,0.05);
+  transition: all 0.3s ease;       /* Анимация */
+  border-radius: 2px;              /* Скругление углов */
+  transition: all 0.3s ease, transform 0.2s, box-shadow 0.2s; /* Анимация */
+}
+
+.tab-nav a::before {               /* Псевдоэлемент для градиента */
+  content: "";
+  position: absolute;              /* Абсолютное позиционирование */
+  top: 0;                          /* Растягиваем на всю площадь */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--graphite-dust); /* Градиентный фон */
+  pointer-events: none;            /* Игнорирование событий мыши */
+  opacity: 0.5;                    /* Прозрачность */
+  border-radius: 1px;              /* Скругление углов */
+}
+
+.tab-nav a::after {                /* Псевдоэлемент для пунктирной рамки */
+  content: "";
+  position: absolute;              /* Абсолютное позиционирование */
+  top: 2px;                        /* Смещение от краев */
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  border: 1px dotted rgba(51,51,51,0.1); /* Пунктирная граница */
+  pointer-events: none;            /* Игнорирование событий мыши */
+}
+
+@media (min-width: 768px) {        /* Адаптив для ссылок */
+  .tab-nav a {
+    padding: 0.4rem 0.8rem;        /* Увеличенные отступы */
+    font-size: 1rem;               /* Размер шрифта */
+  }
+}
+
+.tab-nav a:hover {                 /* Эффект при наведении */
+  background-color: rgba(200, 200, 200, 0.3); /* Цвет фона */
+  transform: translateY(-1px);     /* Смещение вверх */
+  box-shadow:                      /* Тень */
+    2px 2px 2px rgba(51,51,51,0.2),
+    3px 3px 4px rgba(51,51,51,0.1),
+    inset 0 0 10px rgba(51,51,51,0.1);
+  transform: translateY(-3px) scale(1.05); /* Увеличение и смещение */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15); /* Тень */
+}
+
+.tab-nav a:active {                /* Эффект при нажатии */
+  transform: translateY(1px);      /* Смещение вниз */
+  box-shadow:                      /* Тень */
+    0px 0px 1px rgba(51,51,51,0.2),
+    1px 1px 1px rgba(51,51,51,0.1),
+    inset 0 0 10px rgba(51,51,51,0.1);
+  transform: translateY(1px) scale(0.98); /* Уменьшение и смещение */
+}
+
+/* === Секции контента === */
+section {                          /* Максимальная ширина */
+  max-width: 1100px;               /* Внешние отступы */
+  margin: 15px auto;               /* Внутренние отступы */
+  padding: 1.5rem;                 /* Скрытие по умолчанию */
+  display: none;                   /* Относительное позиционирование */
+  position: relative;              /* Граница */
+  border: var(--border);           /* Начальная прозрачность */
+  opacity: 0;                      /* Анимация появления */
+  transition: opacity 0.4s ease-in-out; /* Фон */
+  background: var(--paper);
+}
+
+@media (min-width: 768px) {        /* Адаптив для секций */
+  section {
+    padding: 2rem;                 /* Увеличенные отступы */
+    margin: 20px auto;
+  }
+}
+
+section.active {                   /* Активная секция */
+  display: block;                  /* Отображение */
+  opacity: 1;                      /* Полная видимость */
+}
+
+h2 {                               /* Заголовки h2 */
+  color: var(--graphite);          /* Цвет текста */
+  margin-bottom: 1.5rem;           /* Отступ снизу */
+  padding-bottom: 0.5rem;          /* Внутренний отступ снизу */
+  border-bottom: var(--dashed);    /* Граница снизу */
+  text-transform: uppercase;       /* Преобразование текста */
+  font-size: 1.3rem;               /* Размер шрифта */
+}
+
+.prem {                            /* Специальный класс для заголовков */
+  border-bottom: none;             /* Убираем границу */
+  margin-bottom: -2rem;            /* Отрицательный отступ */
+}
+
+@media (min-width: 768px) {        /* Адаптив для заголовков */
+  h2 {
+    font-size: 1.5rem;             /* Размер шрифта */
+  }
+}
+
+ul {                               /* Списки */
+  list-style-type: none;           /* Убираем маркеры */
+  padding-left: 0;                 /* Убираем отступ слева */
+}
+
+ul li {                            /* Элементы списка */
+  margin: 0.8rem 0;                /* Внешние отступы */
+  position: relative;              /* Относительное позиционирование */
+  padding-left: 25px;              /* Внутренний отступ слева */
+}
+
+ul li::before {                    /* Маркеры для элементов списка */
+  content: "—";                   /* Абсолютное позиционирование */
+  position: absolute;              /* Позиционирование слева */
+  left: 0;
+  font-weight: bold;               /* Жирный шрифт */
+}
+
+.form-group {                      /* Группы форм */
+  margin-bottom: 1.5rem;           /* Отступ снизу */
+  position: relative;              /* Относительное позиционирование */
+}
+
+.form-group::after {               /* Подчеркивание для групп форм */
+  content: "";
+  position: absolute;              /* Абсолютное позиционирование */
+  bottom: -8px;                    /* Позиционирование снизу */
+  left: 0;
+  width: 100%;                     /* Ширина на 100% */
+  height: 2px;                     /* Высота линии */
+  background: var(--dashed);       /* Граница */
+}
+
+input, textarea, select {          /* Элементы форм */
+  width: 100%;                     /* Ширина 100% */
+  padding: 0.6rem;                 /* Внутренние отступы */
+  border: var(--border);           /* Граница */
+  background: var(--paper);        /* Фон */
+  font-size: 1rem;                 /* Размер шрифта */
+}
+
+button {                           /* Кнопки */
+  background: var(--paper);        /* Фон */
+  border: var(--border);           /* Граница */
+  padding: 0.8rem 2rem;            /* Внутренние отступы */
+  color: var(--graphite);          /* Цвет текста */
+  font-weight: 600;                /* Жирный шрифт */
+  font-size: 1rem;                 /* Размер шрифта */
+  cursor: pointer;                 /* Курсор-указатель */
+  position: relative;              /* Относительное позиционирование */
+  margin-top: 1rem;                /* Отступ сверху */
+  width: 100%;                     /* Ширина 100% */
+}
+
+@media (min-width: 768px) {        /* Адаптив для кнопок */
+  button {
+    width: auto;                   /* Автоматическая ширина */
+  }
+}
+
+button::after {                    /* Стрелка в кнопках */
+  content: "→";                    /* Абсолютное позиционирование */
+  position: absolute;              /* Позиционирование справа */
+  right: 10px;
+}
+
+footer {                           /* Подвал */
+  text-align: center;              /* Выравнивание по центру */
+  padding: 1rem;                   /* Внутренние отступы */
+  font-size: 0.8rem;               /* Размер шрифта */
+  border-top: var(--border);       /* Граница сверху */
+  position: relative;              /* Относительное позиционирование */
+  background: var(--paper);        /* Фон */
+}
+
+@media (min-width: 768px) {        /* Адаптив для подвала */
+  footer {
+    padding: 1.5rem;               /* Увеличенные отступы */
+    font-size: 0.9rem;             /* Размер шрифта */
+  }
+}
+
+.drawing-stamp {                   /* Штамп чертежа */
+  position: absolute;              /* Абсолютное позиционирование */
+  bottom: 20px;                    /* Позиционирование снизу */
+  right: 20px;
+  width: 150px;                    /* Ширина */
+  border: var(--border);           /* Граница */
+  font-size: 0.7rem;               /* Размер шрифта */
+  background: var(--paper);        /* Фон */
+}
+
+@media (max-width: 768px) {        /* Адаптив для штампа */
+  .drawing-stamp {
+    position: relative;            /* Относительное позиционирование */
+    bottom: auto;                  /* Сброс позиционирования */
+    right: auto;
+    margin-top: 20px;              /* Отступ сверху */
+    width: 100%;                   /* Ширина 100% */
+  }
+}
+
+.stamp-row {                       /* Строки штампа */
+  display: flex;                   /* Flex-контейнер */
+  border-bottom: var(--border);    /* Граница снизу */
+}
+
+.stamp-row:last-child {            /* Последняя строка штампа */
+  border-bottom: none;             /* Убираем границу */
+}
+
+.stamp-label {                     /* Метка в штампе */
+  width: 40%;                      /* Ширина 40% */
+  padding: 3px 5px;                /* Внутренние отступы */
+  border-right: var(--border);     /* Граница справа */
+}
+
+.stamp-value {                     /* Значение в штампе */
+  width: 60%;                      /* Ширина 60% */
+  padding: 3px 5px;                /* Внутренние отступы */
+}
+
+.inf {                             /* Центрированный текст */
+  text-align: center;
+}
+
+.header-logo {
+  position: absolute;           /* Закреплён наверху */
+  top: 10px;
+  left: 50%;                 /* Центрируем по ширине */
+  transform: translateX(-50%);
+  width: 500px;              /* Размер логотипа */
+  height: auto;
+  margin-top: 11px;
+  z-index: 9999;             /* Поверх всего */
+  pointer-events: none;      /* Чтобы не мешал кликам */
+}
+
+.carousel-container {
+  position: relative;
+  width: 100vw;             /* Вся ширина экрана */
+  left: 50%;
+  right: 50%;
+  transform: translateX(-50%); /* Центрирование */
+  padding: 0;               /* Убираем внутренние отступы */
+  margin: 40px auto;           /* Центрируем */
+  z-index: 10;
+  top: 30px;
+  height: -42px;
+  background-image: url('https://vmasshtabe.ru/app/uploads/2022/03/2340277-vms-1.png');
+  background-size: cover;
+  perspective: 1000px; /* Добавляем перспективу для 3D-эффекта */
+
+}
+
+.carousel {                        /* Карусель */
+  border-radius: 16px;             /* Скругление углов */
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.2); /* Тень */
+  z-index: 1000;
+  position: relative;
+  width: 100%;
+  height: 300px;
+  transform-style: preserve-3d; /* Сохраняем 3D-преобразования */
+  transition: transform 0.5s ease-in-out;
+}
+
+.carousel-track {                  /* Дорожка карусели */
+  display: flex;                   /* Flex-контейнер */
+  transition: transform 0.5s ease-in-out; /* Анимация перемещения */
+}
+
+
+.slide {                           /* Слайд */
+  min-width: 100%;                 /* Минимальная ширина */
+  background: rgba(255, 255, 255, 0.76);               /* Фон */
+  display: flex;                   /* Flex-контейнер */
+  flex-direction: column;          /* Направление - колонка */
+  align-items: center;             /* Выравнивание по центру */
+
+
+}
+
+.slide img {                       /* Изображение в слайде */
+  width: 192px;                    /* Фиксированные размеры */
+  height: 192px;
+  object-fit: cover;               /* Обрезка изображения */
+  border-radius: 12px;             /* Скругление углов */
+  margin-bottom: 12px;             /* Отступ снизу */
+}
+
+.slide h3 {                        /* Заголовок слайда */
+  font-size: 1.2rem;               /* Размер шрифта */
+  margin: 0 0 8px;                 /* Отступы */
+  text-align: center;              /* Выравнивание текста */
+}
+
+.slide p {                         /* Текст слайда */
+  margin: 4px 0;                   /* Отступы */
+  text-align: center;              /* Выравнивание текста */
+  color: #555;                     /* Цвет текста */
+}
+
+.availability {                    /* Доступность */
+  font-weight: bold;               /* Жирный шрифт */
+}
+
+.nav-button {                      /* Кнопки навигации */
+  position: absolute;              /* Абсолютное позиционирование */
+  top: 50%;                        /* Вертикальное центрирование */
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.8); /* Фон */
+  border: none;                    /* Убираем границу */
+  padding: 8px;                    /* Внутренние отступы */
+  border-radius: 50%;              /* Скругление углов */
+  cursor: pointer;                 /* Курсор-указатель */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Тень */
+}
+
+.nav-button svg {                  /* SVG в кнопках */
+  width: 24px;                     /* Размеры */
+  height: 24px;
+  stroke: #333;                    /* Цвет линии */
+}
+
+.prev {                            /* Кнопка "назад" */
+  left: 0;                         /* Позиционирование слева */
+}
+
+.next {                            /* Кнопка "вперед" */
+  right: 0;                        /* Позиционирование справа */
+}
+
+.indicators {                      /* Индикаторы слайдов */
+  display: flex;                   /* Flex-контейнер */
+  justify-content: center;         /* Выравнивание по центру */
+  gap: 8px;                        /* Расстояние между элементами */
+  margin-top: 12px;                /* Отступ сверху */
+}
+
+.dot {                             /* Точка-индикатор */
+  width: 10px;                     /* Размеры */
+  height: 10px;
+  border-radius: 50%;              /* Скругление углов */
+  background: #ccc;                /* Фон */
+  cursor: pointer;                 /* Курсор-указатель */
+}
+
+.dot.active {                      /* Активная точка */
+  background: #555;                /* Фон */
+}
+
+/* === Боковая панель-каталог === */
+.catalog-sidebar {                         
+  position: fixed;                         
+  top: 30px; left: -227px; width: 270px; height: 850px;
+  background: #fff; border-right: 2px dashed #bdbdbd;
+  box-shadow: 2px 0 20px 0 #0001; z-index: 20000;
+  transition: left 0.35s cubic-bezier(.86,.01,.41,1.01);
+  border-radius: 0 50px 50px 0; overflow-y: auto;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+/* при наведении или если есть класс active — панель открыта */
+.catalog-sidebar:hover, .catalog-sidebar.active { left: 0; }
+
+/* Ручка-закладка */
+.catalog-handle {
+  position: fixed;
+  top: 280px;
+  left: 64px;
+  width: 32px;
+  height: auto;
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Arial Narrow', Arial, sans-serif;
+  font-weight: bold;
+  font-size: 25px;
+  letter-spacing: 2px;
+  border-radius: 0 18px 25px 0;
+  border: 1.5px dashed #b0bedb;
+  box-shadow: 2px 4px 20px 0 #3332;
+  cursor: pointer;
+  z-index: 100;
+  transform: translateX(-22px);
+  user-select: none;
+  background: transparent; /* убираем фон здесь */
+}
+
+.catalog-handle::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-radius: 0 18px 25px 0;
+  background: rgba(200, 220, 250, 0.6); /* светло-синий фон */
+  border: 1.5px dashed #b0bedb;
+  z-index: 0;
+}
+
+.catalog-handle:hover {
+  background: #b3d0ef;
+  color: #004ea3;
+}
+.catalog-handle span {
+  display: block;
+  margin: 1px 0;
+  font-family: 'Arial Narrow', Arial, sans-serif;
+}
+
+.catalog-header { padding: 20px 24px 8px 24px; font-weight: bold; letter-spacing: 1px; font-size: 1.15em; border-bottom: 1px dashed #ddd; }
+.catalog-menu { list-style: none; margin: 0; padding: 18px 24px; font-size: 1em; }
+.catalog-menu > li { margin-bottom: 12px; cursor: pointer; font-weight: 500; }
+.catalog-menu > li ul { margin: 6px 0 0 16px; padding: 0; font-weight: 400; font-size: 0.97em; color: #222; }
+.catalog-sketch { margin: 30px 24px 20px 24px; display: flex; justify-content: center; }
+.sketch-rectangle { position: relative; width: 100px; height: 150px; border: 2px solid #aaa; border-radius: 10px; background: #fafbfc; }
+.sketch-label { position: absolute; background: #fff; padding: 0 6px; font-size: 0.85em; color: #888; }
+.sketch-label-left { top: 50%; left: -46px; transform: translateY(-50%);}
+.sketch-label-bottom { bottom: -24px; left: 50%; transform: translateX(-50%);}
+.catalog-menu > li, .catalog-menu > li ul li {
+  transition: color 0.18s; border-radius: 6px; padding: 2px 6px;
+}
+.catalog-menu > li:hover, .catalog-menu > li ul li:hover {
+  background: #eef5fa; color: #0078ff;
+}
+
+    /* === Стили для SVG элементов === */
+svg {
+  width: 200px;                   /* Фиксированная ширина SVG */
+  height: auto;                   /* Автоматическая высота для сохранения пропорций */
+  display: block;                 /* Блочное отображение */
+  margin: 20px auto 0;            /* Внешние отступы: 20px сверху, автоматические по бокам, 0 снизу */
+  stroke: #444;                   /* Цвет обводки элементов */
+  stroke-width: 1;                /* Толщина обводки */
+  fill: none;                     /* Отключение заливки */
+}
+
+/* === Стили корзины === */
+.cart-box {
+  backdrop-filter: blur(8px);      /* Размытие фона */
+  background: rgba(255, 255, 255, 0.95); /* Полупрозрачный белый фон */
+  max-height: 80vh;               /* Максимальная высота 80% от высоты экрана */
+  overflow-y: auto;               /* Вертикальная прокрутка при переполнении */
+}
+
+/* === Стили элемента корзины === */
+.cart-item {
+  border-bottom: 1px dashed #ccc; /* Пунктирная граница снизу */
+  padding-bottom: 4px;            /* Отступ снизу */
+  margin-bottom: 4px;             /* Внешний отступ снизу */
+}
+
+/* === Последний элемент корзины === */
+.cart-item:last-child {
+  border-bottom: none;            /* Убираем границу у последнего элемента */
+}
+
+/* === Кнопка удаления из корзины === */
+.cart-remove-btn {
+  font-size: 12px;                /* Размер шрифта */
+  color: #dc2626;                 /* Цвет текста (красный) */
+  cursor: pointer;                /* Курсор-указатель */
+  transition: color 0.3s;         /* Плавное изменение цвета */
+}
+
+/* === Состояние при наведении на кнопку удаления === */
+.cart-remove-btn:hover {
+  text-decoration: underline;     /* Подчеркивание текста */
+  color: #b91c1c;                /* Темно-красный цвет */
+}
+
+/* === Стили итоговой суммы === */
+.cart-total {
+  font-size: 1rem;               /* Размер шрифта */
+  font-weight: 600;              /* Жирный шрифт */
+  color: #1f2937;                /* Цвет текста */
+}
+
+/* === Заголовок корзины === */
+.cart-title {
+  font-size: 1.125rem;           /* Размер шрифта (аналог text-lg) */
+  font-weight: bold;             /* Жирный шрифт */
+  margin-bottom: 0.75rem;        /* Отступ снизу (аналог mb-3) */
+  text-align: center;            /* Выравнивание по центру */
+  position: absolute;            /* Абсолютное позиционирование */
+}
+
+/* === Сетка каталога === */
+.catalog {
+  display: grid;                 /* Отображение как grid */
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Автоподбор колонок */
+  gap: 20px;                     /* Расстояние между элементами */
+  margin-right: 320px;           /* Отступ справа */
+}
+
+/* === Стили продукта === */
+.product {
+  background: #ffffff;           /* Белый фон */
+  border: 1px solid #dddddd;     /* Серая граница */
+  border-radius: 10px;           /* Скругление углов */
+  padding: 8px;                  /* Внутренние отступы */
+  width: 300px;                  /* Фиксированная ширина */
+  height: 200px;                 /* Фиксированная высота */
+  z-index: 1000;                 /* Высокий z-index */
+  left: 42px;                    /* Позиционирование слева */
+  position: relative;            /* Относительное позиционирование */
+  margin-top: 30px;              /* Отступ сверху */
+  transition: all 0.3s ease;     /* Плавные анимации */
+  transform: scale(1);           /* Нормальный масштаб */
+}
+
+/* === Заголовок продукта === */
+.product h3 {
+  margin: 0 0 8px;              /* Отступы */
+}
+
+/* === Цена продукта === */
+.product .price {
+  font-weight: bold;            /* Жирный шрифт */
+  margin-top: 8px;              /* Отступ сверху */
+}
+
+/* === Кнопка продукта === */
+.product button {
+  margin-top: 12px;             /* Отступ сверху */
+  padding: 6px 12px;            /* Внутренние отступы */
+  background: #1e40af;          /* Синий фон */
+  color: white;                 /* Белый текст */
+  border: none;                 /* Без границы */
+  border-radius: 6px;           /* Скругление углов */
+  cursor: pointer;              /* Курсор-указатель */
+  transition: all 0.3s ease;    /* Плавные анимации */
+}
+
+/* === Состояние кнопки при наведении === */
+.product button:hover {
+  background: #1a368c;         /* Темно-синий фон */
+  transform: scale(1.03);      /* Увеличение на 3% */
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1); /* Тень */
+}
+
+/* === Стили бокса корзины (фиксированная версия) === */
+.cart-box {
+  position: fixed;              /* Фиксированное позиционирование */
+  top: 280px;                   /* Позиция сверху */
+  right: 40px;                  /* Позиция справа */
+  width: 242px;                 /* Ширина */
+  background: #ffffff;          /* Белый фон */
+  border: 1px solid #cccccc;    /* Серая граница */
+  border-radius: 16px;          /* Скругление углов */
+  padding: 16px;                /* Внутренние отступы */
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1); /* Тень */
+  z-index: 1000;                /* Высокий z-index */
+}
+
+/* === Заголовок корзины === */
+.cart-box h2 {
+  text-align: center;           /* Выравнивание по центру */
+  margin-bottom: 12px;          /* Отступ снизу */
+}
+
+/* === Список товаров в корзине === */
+#cart-items {
+  list-style: none;             /* Убираем маркеры списка */
+  padding: 0;                   /* Убираем внутренние отступы */
+  margin-bottom: 12px;          /* Отступ снизу */
+}
+
+/* === Элемент списка корзины === */
+#cart-items li {
+  display: flex;                /* Flex-контейнер */
+  justify-content: space-between; /* Распределение пространства */
+  margin-bottom: 6px;           /* Отступ снизу */
+}
+
+/* === Стили итоговой суммы === */
+.total {
+  text-align: right;            /* Выравнивание по правому краю */
+  font-weight: bold;            /* Жирный шрифт */
+}
+
+/* === Кнопка удаления === */
+.remove-btn {
+  color: red;                   /* Красный цвет */
+  cursor: pointer;              /* Курсор-указатель */
+  background: none;             /* Прозрачный фон */
+  border: none;                 /* Без границы */
+  font-size: 12px;              /* Размер шрифта */
+}
+
+/* === Состояние кнопки удаления при наведении === */
+.remove-btn:hover {
+  text-decoration: underline;   /* Подчеркивание текста */
+}
+
+ /* Анимация появления */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Класс для элементов, которые должны появляться */
+.fade-in {
+  opacity: 0;
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+/* Задержки для последовательного появления */
+.fade-in.delay-1 { animation-delay: 0.2s; }
+.fade-in.delay-2 { animation-delay: 0.4s; }
+.fade-in.delay-3 { animation-delay: 0.6s; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Анимация для текста (именно в секциях "о компании" "информация" и тд) */
+.animated-text {
+  animation: fadeIn 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+/* Задержки для последовательного появления */
+.animated-text:nth-child(1) { animation-delay: 2.2s; }
+.animated-text:nth-child(2) { animation-delay: 2.4s; }
+.animated-text:nth-child(3) { animation-delay: 2.6s; }
+.animated-text:nth-child(4) { animation-delay: 2.8s; }
+
+section#about {
+  position: relative;
+  overflow: visible; /* важно */
+  z-index: 1;
+}
+
+.carousel-container {
+  margin-top: -60px; /* выносим вверх */
+}
+
+  </style>
+
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Функция для проверки, находится ли элемент в области видимости
+  function isInViewport(element) {
+    const rect = element.getBoundingClientRect();
+    return (
+      rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+      rect.bottom >= 0
+    );
+  }
+
+  // Функция для обработки появления элементов
+  function handleScroll() {
+    const elements = document.querySelectorAll('.fade-in:not(.visible)');
+    elements.forEach((element, index) => {
+      if (isInViewport(element)) {
+        // Добавляем класс visible и задержку для последовательного появления
+        element.classList.add('visible', `delay-${index % 3}`);
+      }
+    });
+  }
+
+  // Назначаем обработчик события прокрутки
+  window.addEventListener('scroll', handleScroll);
+
+  // Вызываем сразу при загрузке, чтобы проверить видимые элементы
+  handleScroll();
+});
+
+</script>
+
+
+<script>
+
+// Добавьте этот код в существующий script или создайте новый
+document.addEventListener('DOMContentLoaded', function() {
+  // Анимация для заголовков и текста в секциях
+  const animateElements = () => {
+    const activeSection = document.querySelector('section.active');
+    if (activeSection) {
+      const elements = activeSection.querySelectorAll('h1, h2, h3, p, li');
+      elements.forEach((el, index) => {
+        el.classList.add('animated-text');
+        el.style.animationDelay = `${index * 0.1}s`;
+      });
+    }
+  };
+  
+  // Вызываем при загрузке и при смене вкладок
+  animateElements();
+  
+  // Обновите функцию showTab для анимации при переключении
+  const originalShowTab = window.showTab;
+  window.showTab = function(tabId) {
+    originalShowTab(tabId);
+    setTimeout(animateElements, 50); // Небольшая задержка для корректной работы
+  };
+});
+
+</script>
+
+
+
+<!-- 
+  Основной скрипт для переключения вкладок 
+  Позволяет показывать/скрывать секции при клике на навигационные ссылки
+-->
+  <script>
+    function showTab(tabId) {
+      const sections = document.querySelectorAll('section');
+      sections.forEach(section => {
+        if (section.id === tabId) {
+          section.classList.add('active');
+        } else {
+          section.classList.remove('active');
+        }
+      });
+    }
+    
+    window.onload = () => {
+      showTab('about');
+    }
+  </script>
+
+<script>
+  if (window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    alert("Сайт недоступен на мобильных устройствах. Пожалуйста, откройте его на компьютере.");
+  }
+</script>
+
+<style>
+  @media (pointer: coarse) {
+    html, body {
+      display: none !important;
+    }
+  }
+</style>
+<script>
+  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    alert("Сайт недоступен на мобильных устройствах. Пожалуйста, откройте его на компьютере.");
+  }
+</script>
+
+</head>
+
+<img class="header-logo" src="https://i.postimg.cc/zG5fRpZy/AMA-logo-transparent.png" alt="">
+
+<body>
+
+<!-- Ручка для бокового каталога -->
+<div class="catalog-handle" id="catalogHandle">
+  <span>к</span>
+  <span>а</span>
+  <span>т</span>
+  <span>а</span>
+  <span>л</span>
+  <span>о</span>
+  <span>г</span>
+</div>
+
+<div class="catalog-sidebar" id="catalogSidebar">
+  <div class="catalog-header">КАТАЛОГ НАСОСОВ</div>
+  <ul class="catalog-menu">
+    <li>Чертежная навигация</li>
+    <li>Горизонтальные
+      <ul>
+        <li>– С магнитной муфтой</li>
+        <li>– Моноблочные</li>
+        <li>– Консольные</li>
+      </ul>
+    </li>
+    <li>Вертикальные
+      <ul>
+        <li>– С торцевым уплотнением</li>
+        <li>– Полупогружные</li>
+      </ul>
+    </li>
+    <li>Погружные
+      <ul>
+        <li>– Химические погружные насосы</li>
+      </ul>
+    </li>
+    <li>Материалы
+      <ul>
+        <li>– Фторопластовые</li>
+        <li>– Футерованные</li>
+        <li>– Из нержавеющей стали</li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+
+<script>
+  function checkZoom() {
+    const sidebar = document.querySelector('.cart-box');
+    if (window.devicePixelRatio > 1.9) {
+      sidebar.style.display = 'none';
+    } else {
+      sidebar.style.display = '';
+    }
+  }
+
+  window.addEventListener('load', checkZoom);
+  window.addEventListener('resize', checkZoom);
+</script>
+
+
+<script>
+  function checkZoom() {
+    const sidebar = document.querySelector('.catalog-handle');
+    if (window.devicePixelRatio > 1.9) {
+      sidebar.style.display = 'none';
+    } else {
+      sidebar.style.display = '';
+    }
+  }
+
+  window.addEventListener('load', checkZoom);
+  window.addEventListener('resize', checkZoom);
+</script>
+
+<script>
+const sidebar = document.getElementById('catalogSidebar');
+document.body.addEventListener('mousemove', (e) => {
+  if (e.clientX < 30) { sidebar.classList.add('active'); }
+  else if (!sidebar.matches(':hover')) { sidebar.classList.remove('active'); }
+});
+sidebar.addEventListener('mouseenter', () => sidebar.classList.add('active'));
+sidebar.addEventListener('mouseleave', () => sidebar.classList.remove('active'));
+</script>
+
+  
+  <div class="drawing-frame"></div>
+  <div class="corner-mark"></div>
+  <div class="corner-mark tr"></div>
+  <div class="corner-mark bl"></div>
+  <div class="corner-mark br"></div>
+
+  <div class="content-area">
+    <header>
+      <div class="logo"></div>
+      <div class="slogan"></div>
+    </header>
+
+
+    <nav class="tab-nav">
+
+      
+
+      <a class="fade-in" onclick="showTab('about')">О компании</a>
+      <a class="fade-in" onclick="showTab('catalog')">Каталог</a>
+      <a class="fade-in" onclick="showTab('news')">Новости</a>
+      <a class="fade-in" onclick="showTab('order')">Заказ</a>
+      <a class="fade-in" onclick="showTab('information')">Информация</a>
+      <a class="fade-in" onclick="showTab('contacts')">Контакты</a>
+    </nav>
+
+    <section id="about" class="active">
+
+ <div class="carousel-container" style="position: relative; margin-top: -80px; z-index: 10;">
+    <div class="carousel">
+      <div class="carousel-track" id="carousel-track">
+      <!-- Слайд 1 -->
+      <div class="slide">
+        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Насос 1">
+        <h3>Центробежный насос с магнитной муфтой</h3>
+        <p>Q: 10–50 м³/ч, H: до 40 м, Материал: PTFE</p>
+        <p class="availability" style="color: #2563eb;">В наличии</p>
+      </div>
+      <!-- Слайд 2 -->
+      <div class="slide">
+        <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80" alt="Насос 2">
+        <h3>Моноблочный химический насос</h3>
+        <p>Q: 5–30 м³/ч, H: до 25 м, Материал: AISI 316</p>
+        <p class="availability" style="color: #16a34a;">Склад Москва</p>
+      </div>
+      <!-- Слайд 3 -->
+      <div class="slide">
+        <img src="https://images.unsplash.com/photo-1454023492550-5696f8ff10e1?auto=format&fit=crop&w=400&q=80" alt="Насос 3">
+        <h3>Футерованный насос</h3>
+        <p>Q: 15–60 м³/ч, H: до 50 м, Материал: PFA</p>
+        <p class="availability" style="color: #d97706;">Под заказ</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Индикаторы -->
+  <div class="indicators">
+    <div class="dot active" onclick="goToSlide(0)"></div>
+    <div class="dot" onclick="goToSlide(1)"></div>
+    <div class="dot" onclick="goToSlide(2)"></div>
+  </div>
+</div>
+
+<!-- 
+  Скрипт для работы карусели 
+  Обеспечивает автоматическое и ручное переключение слайдов
+-->
+<script>
+  const track = document.getElementById('carousel-track');
+  const dots = document.querySelectorAll('.dot');
+  const totalSlides = track.children.length;
+  let currentIndex = 0;
+
+  // Обновление позиции карусели и активной точки
+  function updateCarousel() {
+    track.style.transform = `translateX(-${currentIndex * 100}%)`; // Сдвигаем дорожку
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('active', i === currentIndex); // Активная точка
+    });
+  }
+
+  // Перемещение слайда в заданном направлении
+
+function moveSlide(dir) {
+  currentIndex = (currentIndex + dir + totalSlides) % totalSlides;
+  updateCarousel();
+}
+
+
+  // Переход к конкретному слайду
+  function goToSlide(index) {
+    currentIndex = index;
+    updateCarousel();
+  }
+
+  // Автоматическое переключение каждые 7 секунд
+  setInterval(() => moveSlide(1), 7000);
+</script>
+  <div class="about-inner">
+<h2>О компании</h2>
+  <h3>Компания АМА — насосы нового поколения</h3>
+  <p>Мы предоставляем современные технические решения, которые соответствуют самым строгим экономическим, энергетическим и экологическим стандартам для предприятий химической, нефтехимической, нефтеперерабатывающей, металлургической и энергетической сфер.</p>
+  <h3>О нас</h3>
+  <p><b>АМА</b> — это команда инженеров и специалистов с многолетней практикой в области промышленного насосного оборудования. Мы объединили усилия, чтобы сделать современные химические насосы максимально доступными, надёжными и простыми для подбора на производствах по всей России и странам СНГ.</p>
+  <p><b>Наш коллектив</b> — это основа компании.
+В АМА работают эксперты, для которых качество, техническая точность и честность — не просто слова, а принципы ежедневной деятельности. Каждый сотрудник прошёл путь от инженерных бюро и промышленных предприятий до сервисных служб, поэтому отлично понимает реальные потребности заказчиков и умеет находить решения для самых сложных задач.</p>
+  <h3>Наши ценности:</h3>
+  <ul>
+    <li><p>Открытость и прозрачность — мы всегда предлагаем только действительно необходимые варианты, без излишних затрат и необоснованных услуг.</p></li>
+    <li><p>Техническая точность — подходим к каждому запросу индивидуально, учитывая реальные условия эксплуатации и специфику процессов.</p></li>
+    <li><p>Надёжность и безопасность — уверены, что оборудование должно обеспечивать бесперебойную и безопасную работу, поэтому выбираем только проверенные технологии и материалы.</p></li>
+    <li><p>Долгосрочное сотрудничество — для нас важно не просто осуществить поставку, а выстроить прочные партнёрские отношения и поддерживать клиентов на всех этапах эксплуатации.</p></li>
+  </ul>
+  <h3>Номенклатура оборудования:</h3>
+  <p><b>Химические насосы</b> химические насосы (корпуса из фторопласта, нержавеющей стали или с антикоррозионной защитой; подходят для перекачки агрессивных и опасных жидкостей: кислот, щёлочей, растворителей);</p>
+<p><b>Герметичные агрегаты с магнитной муфтой</b> (без применения торцевых уплотнений, с полной герметичностью; идеальны для токсичных, взрывоопасных и летучих сред);</p>
+<p><b>Вертикальные полупогружные насосы</b> (используются для резервуаров различной глубины, справляются с высокотемпературными и агрессивными жидкостями);</p>
+<p><b>Погружные химические насосы</b> (полностью функционируют под уровнем жидкости, предназначены для сложных условий: агрессивных, абразивных и взрывоопасных сред).</p>
+<p>Мы предлагаем оборудование с диапазоном производительности от 1 до 1000 м³/ч, напором от 5 до 160 м, рассчитанное на рабочие температуры от -40 до +180°C, в различных конструктивных исполнениях и с разными типами уплотнений.</p>
+<p>Профессиональный подход и поддержка
+Инженеры АМА подберут оптимальное решение под ваши задачи, помогут с внедрением оборудования и обеспечат своевременное сервисное сопровождение.</p>
+  </div>
+  
+
+<div class="gost-stamp">
+  <table class="gost-stamp-table">
+    <tr>
+      <td colspan="2">Проверил ООО АМА</td>
+      <td>Лист</td>
+      <td>Масса</td>
+      <td>Масштаб</td>
+    </tr>
+    <tr>
+      <td colspan="2"></td>
+      <td>1</td>
+      <td></td>
+      <td>1:1</td>
+    </tr>
+  </table>
+</div>
+
+
+</section>
+
+
+    <section id="catalog">
+
+
+<div class="cart-box">
+  <h2 class="fade-in">🛒 Корзина</h2>
+  <ul class="total" id="cart-items"></ul>
+  <div class="total">Итого: <span id="cart-total">0</span> ₽</div>
+</div>
+
+<!-- 
+  Скрипт для работы корзины 
+  Управляет добавлением/удалением товаров и подсчетом суммы
+-->
+<script>
+  const cart = {}; // Объект для хранения товаров
+  const cartList = document.getElementById('cart-items');
+  const cartTotal = document.getElementById('cart-total');
+
+  // Добавление товара в корзину
+  function addToCart(button) {
+    const product = button.closest('[data-id]');
+    const id = product.dataset.id;
+    const name = product.dataset.name;
+    const price = parseFloat(product.dataset.price);
+
+    if (!cart[id]) {
+      cart[id] = { name, price, quantity: 1 }; // Новый товар
+    } else {
+      cart[id].quantity += 1; // Увеличение количества
+    }
+
+    renderCart(); // Обновление отображения
+  }
+
+  // Удаление товара из корзины
+  function removeFromCart(id) {
+    if (cart[id]) {
+      cart[id].quantity -= 1; // Уменьшение количества
+      if (cart[id].quantity <= 0) {
+        delete cart[id]; // Удаление если количество 0
+      }
+    }
+    renderCart(); // Обновление отображения
+  }
+
+  // Отрисовка корзины
+  function renderCart() {
+    cartList.innerHTML = ''; // Очистка списка
+    let total = 0; // Общая сумма
+
+    // Добавление каждого товара в список
+    for (const id in cart) {
+      const item = cart[id];
+      total += item.price * item.quantity; // Подсчет суммы
+
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <span>${item.name} × ${item.quantity}</span>
+        <button class="remove-btn" onclick="removeFromCart('${id}')">удалить</button>
+      `;
+
+      cartList.appendChild(li);
+    }
+
+    // Обновление общей суммы
+    cartTotal.textContent = total.toLocaleString('ru-RU');
+  }
+</script>
+
+      <h2>Каталог оборудования</h2>
+
+      <div class="catalog">
+  <div class="product" data-id="pump1" data-name="Насос MAG-25" data-price="12400">
+    <h3>Насос MAG-25</h3>
+    <p>Фторопласт, магнитная муфта</p>
+    <p class="price">12 400 ₽</p>
+    <button onclick="addToCart(this)">В корзину</button>
+  </div>
+  <!-- Можно добавить ещё товары по аналогии -->
+</div>
+
+      <div class="gost-stamp">
+  <table class="gost-stamp-table">
+    <tr>
+      <td colspan="2">Проверил ООО АМА</td>
+      <td>Лист</td>
+      <td>Масса</td>
+      <td>Масштаб</td>
+    </tr>
+    <tr>
+      <td colspan="2"></td>
+      <td>1</td>
+      <td></td>
+      <td>1:1</td>
+    </tr>
+  </table>
+</div>
+    </section>
+
+    <section id="news">
+      <h2>Новости химического рынка</h2>
+      <div class="gost-stamp">
+  <table class="gost-stamp-table">
+    <tr>
+      <td colspan="2">Проверил ООО АМА</td>
+      <td>Лист</td>
+      <td>Масса</td>
+      <td>Масштаб</td>
+    </tr>
+    <tr>
+      <td colspan="2"></td>
+      <td>1</td>
+      <td></td>
+      <td>1:1</td>
+    </tr>
+  </table>
+</div>
+    </section>
+
+    <section id="order">
+      <h2>Заказ оборудования</h2>
+    </section>
+
+    <section id="contacts">
+      <h2>Контакты</h2>
+
+      <div class="gost-stamp">
+  <table class="gost-stamp-table">
+    <tr>
+      <td colspan="2">Проверил ООО АМА</td>
+      <td>Лист</td>
+      <td>Масса</td>
+      <td>Масштаб</td>
+    </tr>
+    <tr>
+      <td colspan="2"></td>
+      <td>1</td>
+      <td></td>
+      <td>1:1</td>
+    </tr>
+  </table>
+</div>
+
+    </section>
+
+<section id="information">
+      <h2>Информация</h2>
+      <h1 class="inf">Разница между растворным насосом и шламовым насосом</h1>
+      <p>В области промышленного транспортирования жидкостей <strong>растворные насосы</strong> и <strong>шламовые насосы</strong> — это два широко используемых устройства. Их названия схожи, а функционал частично пересекается, однако существуют <em>существенные различия</em> в применении, конструктивных особенностях и типах перекачиваемых сред. В этой статье подробно рассмотрены отличия между растворными и шламовыми насосами, а также их характеристики, чтобы помочь вам правильно выбрать оборудование под свои задачи.</p>
+      <h3>1. Определение и основные функции</h3>
+      <h3>Растворный насос:</h3>
+      <p><strong>Растворные насосы</strong> специально предназначены для перекачки сред, похожих на раствор и содержащих мелкие частицы, таких как цементный или известковый раствор. Такие среды характеризуются небольшим размером частиц (обычно менее 5 мм) и хорошей текучестью, но предъявляют определённые требования к герметичности и износостойкости насоса. Растворные насосы широко применяются на строительных площадках, в коммунальном хозяйстве и других сферах.</p>
+      <h3>Шламовый насос:</h3>
+      <p><strong>Шламовые насосы</strong> главным образом используются для транспортировки высококонцентрированных и сильно абразивных твердо-жидкостных смесей — например, хвостов шахт, угольной пульпы, металлургических шламов и т.д. Диапазон частиц в таких средах значительно шире, нередко они содержат острые или твёрдые включения, поэтому насосы требуют высокой износостойкости и устойчивости к ударам.</p>
+      <h3>2. Отличия в конструктивном исполнении</h3>
+      <h3>Материалы проточных частей:</h3>
+      <p>В <strong>растворных насосах</strong> для изготовления проточных частей (рабочих колёс, корпусов) обычно используют высокохромистый чугун или износостойкую резину, чтобы противостоять длительному воздействию мелких частиц.</p>
+      <p>В <strong>шламовых насосах</strong> среда более абразивна, поэтому для проточных частей применяют более прочные материалы, такие как сверхвысокомолекулярный полиэтилен, дуплексная нержавеющая сталь или даже керамические покрытия. В тяжёлых моделях часто используются сменные изнашиваемые пластины.</p>
+      <h3>Конструкция рабочего колеса и проточного канала:</h3>
+      <p>Лопасти рабочего колеса <strong>растворного насоса</strong> шире, а проточные каналы рассчитаны на минимальное сопротивление и предотвращение засорения при изменении текучести раствора.</p>
+      <p>У <strong>шламовых насосов</strong> лопасти короче и толще, а проточный канал шире для пропуска крупных частиц и снижения риска засоров. В некоторых моделях используется открытая конструкция рабочего колеса для облегчения очистки.</p>
+      <h3>Система уплотнения:</h3>
+      <p>В <strong>растворных насосах</strong> чаще применяются механические уплотнения для предотвращения утечек раствора.</p>
+      <p>В <strong>шламовых насосах</strong> из-за агрессивной среды используются комбинированные системы уплотнения (например, механическое уплотнение + сальниковое), а также подача промывочной воды для увеличения ресурса уплотнений.</p>
+      <h3>3. Заблуждения и важные моменты при выборе</h3>
+      <p><em>Заблуждение:</em> Считается, что «шламовый насос может полностью заменить растворный».</p>
+<p><em>На самом деле:</em> Хотя шламовые насосы могут перекачивать более крупные частицы, их энергоёмкость и стоимость выше. Использование их для подачи слабоабразивного раствора приведёт к перерасходу энергии и средств из-за низкой эффективности.</p>
+<p><strong>Важные моменты:</strong> Выбирайте тип насоса в зависимости от характеристик среды (твёрдость, размер частиц, концентрация); регулярно проверяйте износ проточных частей, в шламовых насосах чаще заменяют кожухи, рабочие колёса и другие изнашиваемые детали; в агрессивных средах дополнительно учитывайте стойкость материалов к кислотам и щелочам.</p>
+<p>Хотя растворные и шламовые насосы относятся к оборудованию для перекачки суспензий, они принципиально отличаются по конструкции и характеристикам из-за разных свойств рабочих сред и условий эксплуатации. <strong>Растворные насосы</strong> больше ориентированы на экономичность и защиту от засоров, подходят для мелких частиц и средних/низких концентраций; <strong>шламовые</strong> — на износостойкость и способность пропускать крупные включения, они незаменимы в тяжёлой промышленности (горнодобывающей, металлургии). Правильный выбор оборудования позволит повысить производительность, сократить расходы на обслуживание и продлить срок службы насосов.</p>
+<h1 class="inf">Стратегия выбора насосов для очистки сточных вод в электронной и полупроводниковой промышленности</h1>
+<p>В электронной и полупроводниковой промышленности очистка сточных вод имеет решающее значение. Правильный выбор насосов для этих целей обеспечивает не только эффективную обработку сточных вод, но также влияет на экономичность эксплуатации и экологическую безопасность. Ниже приведена стратегия выбора насосов для очистки сточных вод с учетом особенностей данной отрасли.</p>
+<p><strong>1. Анализ характеристик сточных вод:</strong><br>
+Перед выбором насоса необходимо подробно проанализировать свойства очищаемых стоков. В электронной и полупроводниковой промышленности сточные воды могут содержать различные химикаты, твердые частицы, отличаться по уровню кислотности и щелочности. <em>Важно точно определить химический состав и pH сточных вод для корректного выбора материала и типа насоса.</em>
+</p>
+<p><strong>2. Коррозионная стойкость:</strong><br>
+Так как стоки могут содержать агрессивные химические вещества, выбранный насос должен обладать высокой коррозионной стойкостью. Материал насоса подбирается с учетом состава сточных вод — это может быть кислотостойкая пластмасса, фторопласт, нержавеющая сталь и другие специальные материалы.
+</p>
+<p><strong>3. Требования к подаче и напору:</strong><br>
+Подбор модели и модификации насоса осуществляется на основании требуемых значений подачи (расхода) и напора системы водоочистки. <em>Важно, чтобы характеристики насоса соответствовали производительности установки для обеспечения эффективной работы.</em>
+</p>
+<p><strong>4. Конструкция и герметичность насоса:</strong><br>
+Для отрасли характерно использование насосов с высокой коррозионной стойкостью и повышенными требованиями к герметичности. Наиболее популярны магнитные и центробежные насосы, так как они обеспечивают надежное уплотнение и минимизируют риск протечек.
+</p>
+<p><strong>5. Автоматизация и мониторинг:</strong><br>
+Рекомендуется интегрировать насосы в автоматизированные системы управления для дистанционного мониторинга и контроля работы. Это позволяет своевременно выявлять и устранять неисправности, повышать надежность системы очистки.
+</p>
+<p><strong>6. Экономичность и устойчивость:</strong><br>
+Учитывайте не только стоимость приобретения, но и расходы на обслуживание, а также энергопотребление оборудования. Следует отдавать предпочтение насосам, обеспечивающим долгосрочное снижение эксплуатационных затрат и минимальное влияние на окружающую среду.
+</p>
+<p><strong>7. Соответствие нормативам:</strong><br>
+Полупроводниковое производство регулируется строгими экологическими стандартами. Необходимо удостовериться, что выбранный насос соответствует всем действующим требованиям и нормам, чтобы избежать претензий со стороны контролирующих органов.
+</p>
+<p>Таким образом, при выборе насосов для очистки сточных вод в электронной и полупроводниковой промышленности необходимо комплексно учитывать характеристики стоков, коррозионную стойкость, требования по расходу и напору, особенности конструкции, возможности автоматизации, экономические аспекты и соответствие нормативным требованиям. <em>Грамотный выбор оборудования повысит эффективность водоочистки, снизит воздействие на окружающую среду и обеспечит бесперебойную работу предприятия в рамках действующего законодательства.</em> </p>
+<h1 class="inf">Выбор материалов для насоса подачи щёлочи</h1>
+<p><strong>Щёлочь</strong> — важный химический реагент, широко применяемый в промышленном производстве. Для транспортировки этого высококоррозионного вещества крайне важно правильно подобрать материал химического насоса. Наиболее часто для перекачки щёлочи используют насосы из <strong>фторопласта</strong> и <strong>нержавеющей стали</strong>. В данной статье подробно рассмотрены особенности применения этих двух материалов, их достоинства и недостатки, чтобы вы могли принять оптимальное решение при выборе насосного оборудования.</p>
+<h3>Насосы из фторопласта</h3>
+<p><strong>Фторопласт (PTFE, FEP, PFA и др.)</strong> обладает превосходной химической стойкостью и устойчив к воздействию практически всех сильных кислот, щелочей и органических растворителей. Это делает фторопластовые насосы идеальным выбором для перекачки агрессивных сред. Кроме того, фторопласт характеризуется низкой поверхностной энергией, хорошими самосмазывающими свойствами, не склонен к налипанию и образованию отложений, что облегчает обслуживание и эксплуатацию насосов.</p>
+<p>Однако у фторопластовых насосов есть и недостатки. Основной — относительно низкая механическая прочность материала. Особенно это проявляется при повышенных температурах: с увеличением температуры прочность и жёсткость фторопласта заметно снижаются. Поэтому для перекачки горячих щелочных растворов такие насосы подходят не всегда.</p>
+<h3>Насосы из нержавеющей стали</h3>
+<p><strong>Нержавеющая сталь</strong> обладает хорошей коррозионной стойкостью и высокой механической прочностью. Насосы из нержавеющей стали эффективно работают с нейтральными и слабо-щелочными средами, обеспечивают надёжность при высоких температурах и давлениях. К их преимуществам относятся долгий срок службы, износостойкость и относительно невысокие затраты на обслуживание.</p>
+<p>Однако при работе с концентрированными щелочными растворами коррозионная стойкость нержавеющей стали может быть недостаточной. В таких условиях на поверхности возможны точечная коррозия (питтинг) и напряжённостная коррозия. Поэтому при эксплуатации насосов из нержавеющей стали с сильными щелочами требуется регулярный контроль состояния оборудования и своевременное техническое обслуживание.</p>
+<h3>Вывод и рекомендации</h3>
+<p>Оба типа насосов — из фторопласта и нержавеющей стали — имеют свои преимущества и ограничения. Если требуется перекачка концентрированной щёлочи при невысокой температуре, приоритет стоит отдать <strong>фторопластовым насосам</strong> благодаря их высокой химической стойкости. Для перекачки слабощелочных растворов при повышенных температурах и давлениях, а также при необходимости высокой механической прочности, предпочтительнее использовать <strong>насосы из нержавеющей стали</strong>.</p>
+<p><em>Выбор материала насоса должен основываться на характеристиках транспортируемой среды, условиях эксплуатации, а также затратах на обслуживание.</em> Наилучшие результаты достигаются при комплексном подходе — после консультаций со специалистами и проведения опытных испытаний оборудования, что обеспечиbт стабильную, эффективную и экономичную работу насоса в процессе транспортировки щёлочи.</p>
+<h1 class="inf">Анализ преимуществ и недостатков механических уплотнений химических насосов и их области применения</h1>
+<p>В химическом производстве <strong>механические уплотнения</strong> — одни из ключевых компонентов насосного оборудования, напрямую влияющие на надёжность и безопасность эксплуатации. По конструкции и принципу работы механические уплотнения делятся на три основных типа: <strong>одинарные, сдвоенные и картриджные</strong>. Ниже приведён научный анализ их характеристик, достоинств, недостатков и областей применения.
+</p>
+<h3>Одинарное (single) механическое уплотнение</h3>
+<p><strong>Конструктивные особенности:</strong><br>
+Состоит из пары трения (подвижное и неподвижное кольцо), пружины, вспомогательных уплотнений и других элементов. Имеет только одну плоскость уплотнения между средой и атмосферой. Часто используется вместе с системой промывки (например, API Plan 11).
+</p>
+<p><strong>Преимущества:</strong></p>
+  <ul>
+    <li><em>Высокая надёжность:</em> Даже при отказе одной пары утечки временно блокируются второй.</li>
+    <li><em>Применение в сложных средах:</em> Подходит для токсичных, горючих, летучих и абразивных жидкостей.</li>
+    <li><em>Увеличенный срок службы:</em> Барьерная жидкость смазывает и охлаждает пары трения, уменьшая их износ.</li>
+  </ul>
+
+  <p><strong>Недостатки:</strong></p>
+  <ul>
+    <li><em>Сложная конструкция:</em> Требует циркуляционной системы барьерной жидкости — выше затраты на монтаж и обслуживание.</li>
+    <li><em>Повышенное энергопотребление:</em> Необходимы дополнительные ресурсы для поддержания циркуляции изолирующей среды.</li>
+    <li><em>Высокие требования к квалификации персонала:</em> Монтаж и эксплуатация требуют высокой точности и грамотного обслуживания системы.</li>
+  </ul>
+
+  <p><strong>Области применения:</strong><br>
+Опасные среды (например, хлор, бензол), высокая температура и давление, технологические процессы с жёсткими требованиями к герметичности.
+</p>
+
+<h3>Картриджное (cartridge) механическое уплотнение</h3>
+<p><strong>Конструктивные особенности:</strong><br>
+Узел поставляется в собранном виде (подвижное/неподвижное кольцо, пружина и пр.), который устанавливается на вал насоса как единое изделие. Не требует регулировки при монтаже — все параметры настроены на заводе.
+</p>
+
+<p><strong>Преимущества:</strong></p>
+  <ul>
+    <li><em>Простота и скорость монтажа:</em> Уменьшение человеческого фактора, сокращение простоев.</li>
+    <li><em>Высокая надёжность:</em> Проверено и отрегулировано на заводе — стабильные характеристики.</li>
+    <li><em>Минимальные расходы на обслуживание:</em> При поломке узел меняется полностью, что облегчает обслуживание.</li>
+  </ul>
+
+  <p><strong>Недостатки:</strong></p>
+  <ul>
+    <li><em>Высокая начальная стоимость:</em> За счёт заводской сборки единичная цена выше.</li>
+    <li><em>Сложности с запасами:</em> Требует хранения различных модификаций под разные задачи.</li>
+    <li><em>Меньшая гибкость:</em> Для нестандартных условий требуется индивидуальное проектирование и время на изготовление.</li>
+  </ul>
+
+  <p><strong>Области применения:</strong><br>
+Дорогие насосы, оборудование с частыми пусками/остановками, производственные линии с повышенными требованиями к скорости и удобству обслуживания (нефтехимия, фармацевтика и др.).
+</p>
+
+<p><strong>Рекомендации по выбору:</strong></p>
+<p>1.	<em>Характеристики среды:</em> Для твёрдых частиц или высокоагрессивных жидкостей — сдвоенные уплотнения.</p>
+<p>2.	<em>Давление:</em> При высоком давлении — двойные или картриджные уплотнения.</p>
+<p>3.	<em>Возможности сервиса:</em> При отсутствии опытного персонала предпочтительнее картриджные решения.</p>
+<p>4.	<em>Бюджет:</em> Для простых условий и ограниченного бюджета — одинарные уплотнения.</p>
+<p><strong>Резюме:</strong></p>
+  <ol>
+  <li><strong>Одинарное механическое уплотнение:</strong> Просто и выгодно, применяется для стандартных сред и условий.</li>
+  <li><strong>Сдвоенное механическое уплотнение:</strong> Безопасность и резерв, для высокорисковых задач.</li>
+  <li><strong>Картриджное механическое уплотнение:</strong> Надёжность и быстрая замена, для производств с высокими требованиями к эффективности и минимизации простоев.</li>
+</ol>
+<p>С ростом требований к безопасности и экологии в химической промышленности доля применения сдвоенных и картриджных уплотнений увеличивается. <em>Выбор типа уплотнения должен основываться на характеристиках среды, рабочих условиях и затратах за весь жизненный цикл оборудования</em> — это позволяет добиться оптимального баланса между безопасностью и экономичностью эксплуатации.</p>
+
+<h1 class="inf">Разница между вертикальным погружным насосом и погружным насосом</h1>
+<p>В промышленности, сельском хозяйстве и коммунальном хозяйстве широко применяются два типа насосов — <strong>вертикальные погружные</strong> и <strong>полностью погружные (submersible pump)</strong>. Несмотря на то что оба вида предназначены для перекачки жидкостей, между ними существуют принципиальные различия по конструкции, области применения, способу установки и эксплуатационным характеристикам. Рассмотрим эти отличия подробнее.</p>
+  <p><strong>1. Конструктивные особенности</strong></p>
+    <p><strong>Вертикальный погружной насос:</strong></p>
+    <ol>
+        <li><strong>Конструкция:</strong><br>
+        Корпус насоса частично погружён в жидкость, а электродвигатель располагается над поверхностью жидкости. Связь между двигателем и рабочим колесом осуществляется через длинный вал. По глубине погружения выделяют насосы с коротким и длинным валом.</li>
+        <li><strong>Уплотнение:</strong><br>
+        Используются торцевые (механические) или сальниковые уплотнения для предотвращения проникновения жидкости вдоль вала к двигателю.</li>
+        <li><strong>Материалы:</strong><br>
+        Часто применяются нержавеющая сталь, фторопласт, керамика — для работы с агрессивными и коррозионными средами.</li>
+    </ol>
+
+    <p><strong>Погружной насос:</strong></p>
+    <ol>
+        <li><strong>Области применения:</strong><br>
+        Глубинное водозаборное оборудование, дренаж, откачка сточных вод, ливневые насосные станции — любые задачи, где требуется полное погружение насоса.</li>
+        <li><strong>Установка:</strong><br>
+        Вся установка полностью погружается в жидкость, питание подаётся по кабелю, сложные опоры не требуются.</li>
+        <li><strong>Преимущества:</strong><br>
+        Компактная конструкция, не занимает много места; отсутствие ограничений по высоте всасывания; широкий диапазон напоров (до сотен метров).</li>
+    </ol>
+
+    <h3>3. Рекомендации по выбору</h3>
+    <p><strong>Когда выбирать вертикальный погружной насос:</strong></p>
+    <ul>
+        <li>Для работы с высокоагрессивными, горячими или содержащими твёрдые частицы жидкостями;</li>
+        <li>При частых колебаниях уровня жидкости (гибкая регулировка глубины);</li>
+        <li>Если двигатель должен быть изолирован от среды (взрывоопасные, токсичные зоны).</li>
+    </ul>
+
+    <p><strong>Когда выбирать погружной насос:</strong></p>
+    <ul>
+        <li>Для глубокого водозабора, дренажа, муниципальных и промышленных систем с большими объёмами воды;</li>
+        <li>При ограниченном пространстве и необходимости простой установки;</li>
+        <li>Для длительной бесперебойной работы с высокими требованиями к герметичности.</li>
+    </ul>
+
+    <h3>4. Частые заблуждения</h3>
+    <div class="myth">
+        <p><strong>Миф 1:</strong> "Погружные насосы могут заменить вертикальные для коррозионных жидкостей."</p>
+        <p>— На практике стойкость зависит от используемых материалов. Без специального исполнения обычный погружной насос не выдержит сильных кислот и щелочей.</p>
+    </div>
+    <div class="myth">
+        <p><strong>Миф 2:</strong> "Напор вертикального насоса всегда ниже, чем у погружного."</p>
+        <p>— На самом деле, существуют многоступенчатые вертикальные погружные насосы, способные создавать высокий напор.
+</p>
+    </div>
+
+    <div class="conclusion">
+        <h3>5. Краткий вывод</h3>
+        <p><strong>Главное отличие</strong> между вертикальными погружными и полностью погружными насосами — в конструкции привода, типе уплотнения и особенностях перекачиваемых сред.<br>
+<strong>Вертикальные погружные насосы</strong> с внешним двигателем и устойчивыми к коррозии материалами оптимальны для химической, металлургической и других отраслей с агрессивными средами.<br>
+<strong>Погружные насосы</strong> с высокой степенью интеграции, простой установкой и широким диапазоном применения — идеальны для водозабора и дренажа.
+</p>
+<p><em>Выбор типа насоса должен основываться на свойствах среды, условиях эксплуатации и стоимости обслуживания.</em> При необходимости оптимального решения рекомендуется консультация с инженером-проектировщиком и подбор оборудования под конкретные задачи.</p>
+    </div>
+
+<div class="gost-stamp">
+  <table class="gost-stamp-table">
+    <tr>
+      <td colspan="2">Проверил ООО АМА</td>
+      <td>Лист</td>
+      <td>Масса</td>
+      <td>Масштаб</td>
+    </tr>
+    <tr>
+      <td colspan="2"></td>
+      <td>1</td>
+      <td></td>
+      <td>1:1</td>
+    </tr>
+  </table>
+</div>
+
+</section>
+
+    </section>
+
+
+<section id="order">
+  <h2>форма заказа</h2>
+  <form>
+    <div class="form-group">
+      <label for="company">Наименование организации</label>
+      <input type="text" id="company" name="company" required>
+    </div>
+    <div class="form-group">
+      <label for="fio">Контактное лицо (ФИО)</label>
+      <input type="text" id="fio" name="fio" required>
+    </div>
+    <div class="form-group">
+      <label for="phone">Телефон</label>
+      <input type="tel" id="phone" name="phone" required>
+    </div>
+    <div class="form-group">
+      <label for="email">E-mail</label>
+      <input type="email" id="email" name="email" required>
+    </div>
+    <div class="form-group">
+      <label for="pump_type">Тип насоса</label>
+      <select id="pump_type" name="pump_type" required>
+        <option value="">Выберите тип</option>
+        <option value="horizontal">Горизонтальный</option>
+        <option value="vertical">Вертикальный</option>
+        <option value="submersible">Погружной</option>
+        <option value="magnetic">С магнитной муфтой</option>
+        <option value="other">Другое</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="flow">Производительность, м³/ч</label>
+      <input type="number" id="flow" name="flow" step="0.01" required>
+    </div>
+    <div class="form-group">
+      <label for="head">Напор, м</label>
+      <input type="number" id="head" name="head" step="0.01" required>
+    </div>
+    <div class="form-group">
+      <label for="density">Плотность перекачиваемой среды, кг/м³</label>
+      <input type="number" id="density" name="density" step="0.01" required>
+    </div>
+    <div class="form-group">
+      <label for="temperature">Температура среды, °C</label>
+      <input type="number" id="temperature" name="temperature" step="0.1" required>
+    </div>
+    <div class="form-group">
+      <label for="medium">Описание перекачиваемой среды (название, химсостав, вязкость, абразивность и т.д.)</label>
+      <textarea id="medium" name="medium" required></textarea>
+    </div>
+    <div class="form-group">
+      <label for="seal">Тип уплотнения</label>
+      <select id="seal" name="seal">
+        <option value="">Выберите тип</option>
+        <option value="mechanical">Механическое</option>
+        <option value="magnetic">Магнитная муфта</option>
+        <option value="gland">Сальниковое</option>
+        <option value="other">Другое</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="extras">Дополнительные требования или пожелания</label>
+      <textarea id="extras" name="extras"></textarea>
+    </div>
+    <button type="submit">Отправить заявку</button>
+  </form>
+</section>
+
+
+    <footer>
+      &copy; 2025 AMA. Все права защищены.
+    </footer>
+  </div>
+</body>
+</html>
